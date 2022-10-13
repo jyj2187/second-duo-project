@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 public class PostDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,13 +42,17 @@ public class PostDto {
         private String title;
         private String body;
         private Posts.PostStatus postStatus;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
 
         @Builder
-        public Response(Long postId, String title, String body, Posts.PostStatus postStatus) {
+        public Response(Long postId, String title, String body, Posts.PostStatus postStatus, LocalDateTime createdAt, LocalDateTime modifiedAt) {
             this.postId = postId;
             this.title = title;
             this.body = body;
             this.postStatus = postStatus;
+            this.createdAt = createdAt;
+            this.modifiedAt = modifiedAt;
         }
     }
 }
