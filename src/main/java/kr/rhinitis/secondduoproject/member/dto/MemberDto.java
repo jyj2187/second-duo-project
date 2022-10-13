@@ -1,5 +1,6 @@
 package kr.rhinitis.secondduoproject.member.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Post{
         private String username;
         private String password;
@@ -23,7 +24,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Response{
         private String username;
         private String password;
@@ -38,7 +39,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Patch{
         private String username;
         private String password;

@@ -1,7 +1,6 @@
 package kr.rhinitis.secondduoproject.member.service;
 
 import kr.rhinitis.secondduoproject.member.dto.MemberDto;
-import org.springframework.stereotype.Service;
 
 public interface MemberService {
 

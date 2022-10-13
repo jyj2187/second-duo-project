@@ -1,6 +1,6 @@
 package kr.rhinitis.secondduoproject.member.entity;
 
-import lombok.AllArgsConstructor;
+import kr.rhinitis.secondduoproject.member.dto.MemberDto;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
@@ -53,5 +53,14 @@ public class Member {
         this.address = address;
         this.about = about;
         this.memberStatus = MemberStatus.ACTIVE;
+    }
+
+    public void update(MemberDto.Patch patchDto){
+        this.username = patchDto.getUsername();
+        this.password = patchDto.getPassword();
+        this.email = patchDto.getEmail();
+        this.nickname = patchDto.getNickname();
+        this.address = patchDto.getAddress();
+        this.about = patchDto.getAbout();
     }
 }

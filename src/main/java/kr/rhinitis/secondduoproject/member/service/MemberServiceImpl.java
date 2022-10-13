@@ -1,6 +1,8 @@
 package kr.rhinitis.secondduoproject.member.service;
 
 import kr.rhinitis.secondduoproject.member.dto.MemberDto;
+import kr.rhinitis.secondduoproject.member.entity.Member;
+import kr.rhinitis.secondduoproject.member.mapper.MemberMapper;
 import kr.rhinitis.secondduoproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,24 +12,31 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberMapper memberMapper;
 
     @Override
     public MemberDto.Response joinMember(MemberDto.Post postDto) {
-        return null;
+        Member member = memberMapper.dtoToMember(postDto);
+        memberRepository.save(member);
+        return memberMapper.memberToResponse(member);
     }
 
     @Override
     public MemberDto.Response findMember(Long memberId) {
-        return null;
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        return memberMapper.memberToResponse(member);
     }
 
     @Override
     public MemberDto.Response updateMember(Long memberId, MemberDto.Patch patch) {
-        return null;
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.update(patch);
+        memberRepository.save(member);
+        return memberMapper.memberToResponse(member);
     }
 
     @Override
     public void deleteMember(Long memberId) {
-
+        memberRepository.deleteById(memberId);
     }
 }
