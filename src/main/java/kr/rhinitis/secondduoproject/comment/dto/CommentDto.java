@@ -32,13 +32,15 @@ public class CommentDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public class Response{
+        private Long commentId;
         private String body;
         //member id?
         //member name?
         private LocalDateTime createAt;
         private LocalDateTime modifyAt;
 
-        public Response(String body, LocalDateTime createAt, LocalDateTime modifyAt) {
+        public Response(Long commentId,String body, LocalDateTime createAt, LocalDateTime modifyAt) {
+            this.commentId = commentId;
             this.body = body;
             this.createAt = createAt;
             this.modifyAt = modifyAt;

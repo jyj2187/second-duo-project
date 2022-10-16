@@ -5,9 +5,9 @@ import kr.rhinitis.secondduoproject.util.dto.MultiResponseDto;
 import org.springframework.data.domain.PageRequest;
 
 public interface PostService {
-    public PostDto.Response createPost(PostDto.Post postDto);
-    public PostDto.Response updatePost(Long postId, PostDto.Patch patchDto);
-    public PostDto.Response readPost(Long postId);
-    public MultiResponseDto readAllPost(PageRequest pageRequest);
-    public void deletePost(Long postId);
+    PostDto.Response createPost(PostDto.Post postDto);
+    PostDto.Response updatePost(Long postId, PostDto.Patch patchDto);
+    PostDto.Response readPost(Long postId);
+    MultiResponseDto readAllPost(PageRequest pageRequest);
+    void deletePost(Long postId);
 }

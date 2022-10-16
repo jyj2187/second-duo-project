@@ -4,7 +4,11 @@ import kr.rhinitis.secondduoproject.comment.dto.CommentDto;
 import kr.rhinitis.secondduoproject.comment.entity.Comment;
 import kr.rhinitis.secondduoproject.comment.mapper.CommentMapper;
 import kr.rhinitis.secondduoproject.comment.repository.CommentRepository;
+import kr.rhinitis.secondduoproject.posts.entity.Posts;
+import kr.rhinitis.secondduoproject.util.dto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +20,15 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper mapper;
 
     @Override
-    public CommentDto.Response joinComment(CommentDto.Post postDto) {
+    public CommentDto.Response createComment(CommentDto.Post postDto) {
         Comment comment = mapper.dtoToComment(postDto);
         commentRepository.save(comment);
+        return mapper.commentToResponse(comment);
+    }
+
+    @Override
+    public CommentDto.Response readComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
         return mapper.commentToResponse(comment);
     }
 
@@ -34,6 +44,13 @@ public class CommentServiceImpl implements CommentService {
         comment.updateComment(patch);
         commentRepository.save(comment);
         return mapper.commentToResponse(comment);
+    }
+
+    @Override
+    public MultiResponseDto readAllComment(PageRequest pageRequest) {
+        Page<Comment> commentPage = commentRepository.findAll(pageRequest);
+        List<Comment> commentList = commentPage.getContent();
+        return new MultiResponseDto(mapper.commentListToResponseList(commentList), commentPage);
     }
 
     @Override
