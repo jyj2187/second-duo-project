@@ -1,15 +1,16 @@
 package kr.rhinitis.secondduoproject.item.entity;
 
+import kr.rhinitis.secondduoproject.image.entity.Image;
 import kr.rhinitis.secondduoproject.item.dto.ItemDto;
+import kr.rhinitis.secondduoproject.member.entity.Member;
 import kr.rhinitis.secondduoproject.util.audit.Auditable;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +25,12 @@ public class Item extends Auditable {
     private ItemStatus status;
     private PaymentMethod paymentMethod;
 
-    //private Member member;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "posts")
+    private List<Image> imagesList;
     //private Category category;
 
     public enum ItemStatus{
@@ -50,13 +56,16 @@ public class Item extends Auditable {
         }
     }
 
-    public Item(Long itemId, String title, String body, Integer price, String itemName, ItemStatus status, PaymentMethod paymentMethod) {
+    @Builder
+    public Item(Long itemId, String title, String body, Integer price, String itemName,Member member,List<Image> imagesList, ItemStatus status, PaymentMethod paymentMethod) {
         this.itemId = itemId;
         this.title = title;
         this.body = body;
         this.price = price;
         this.itemName = itemName;
         this.status = status;
+        this.member = member;
+        this.imagesList = imagesList;
         this.paymentMethod = paymentMethod;
     }
 
@@ -66,5 +75,9 @@ public class Item extends Auditable {
         this.price = patchDto.getPrice();
         this.itemName = patchDto.getItemName();
         //this.paymentMethod = paymentMethod;
+    }
+
+    public void setMember(Member member){
+        this.member = member;
     }
 }

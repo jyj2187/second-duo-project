@@ -29,6 +29,8 @@ public class Image {
     @JoinColumn(name = "item_id")
     private Item item;
 
+
+
     @Builder
     public Image(Long imageId, String originName, String storedName, String storedPath, Member member, Posts posts, Item item) {
         this.imageId = imageId;

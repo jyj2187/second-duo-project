@@ -37,12 +37,20 @@ public class MemberController {
         return "loginForm";
     }
 
+    @GetMapping("/member/{member-id}")
+    public String getMember(@PathVariable("member-id") Long memberId,
+                            Model model){
+        MemberDto.Response member = memberService.findMember(memberId);
+        model.addAttribute("member",member);
+        return "/member/"+memberId;
+    }
+
     @GetMapping("/member/edit/{member-id}")
     public String editMemberForm(@PathVariable("member-id") Long memberId,
                                  Model model) {
         MemberDto.Response member = memberService.findMember(memberId);
         model.addAttribute("member", member);
-        return "member/editMember";
+        return "/member/editMember";
     }
 
     @PostMapping("/member/edit/{member-id}")
