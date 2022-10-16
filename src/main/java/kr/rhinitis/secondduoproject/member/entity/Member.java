@@ -1,6 +1,10 @@
 package kr.rhinitis.secondduoproject.member.entity;
 
+import kr.rhinitis.secondduoproject.comment.entity.Comment;
+import kr.rhinitis.secondduoproject.image.entity.Image;
+import kr.rhinitis.secondduoproject.item.entity.Item;
 import kr.rhinitis.secondduoproject.member.dto.MemberDto;
+import kr.rhinitis.secondduoproject.posts.entity.Posts;
 import kr.rhinitis.secondduoproject.util.audit.Auditable;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -27,8 +33,34 @@ public class Member extends Auditable {
 
     private String about;
 
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    private String profileImage;
+
+    @OneToMany(mappedBy = "member")
+    private List<Posts> postsList;
+
+    @OneToMany(mappedBy = "member")
+    private List<Item> itemsList;
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> commentList;
+
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
+
+    @Getter
+    public enum Role {
+
+        ROLE_ADMIN("관리자"), ROLE_MEMBER("일반사용자");
+
+        private String description;
+
+        Role(String description) {
+            this.description = description;
+        }
+    }
 
     public enum MemberStatus {
 
@@ -48,7 +80,7 @@ public class Member extends Auditable {
     }
 
     @Builder
-    public Member(Long memberId, String username, String password, String email, String nickname, String address, String about, MemberStatus memberStatus) {
+    public Member(Long memberId, String username, String password, String email, String nickname, String address, String about, Role role, String image, List<Posts> postsList, List<Item> itemsList, List<Comment> commentList, MemberStatus memberStatus) {
         this.memberId = memberId;
         this.username = username;
         this.password = password;
@@ -56,7 +88,12 @@ public class Member extends Auditable {
         this.nickname = nickname;
         this.address = address;
         this.about = about;
-        this.memberStatus = MemberStatus.ACTIVE;
+        this.role = role == null ? Role.ROLE_MEMBER : role;
+        this.profileImage = image;
+        this.postsList = postsList;
+        this.itemsList = itemsList;
+        this.commentList = commentList;
+        this.memberStatus = memberStatus == null ? MemberStatus.ACTIVE : memberStatus;
     }
 
     public void update(MemberDto.Patch patchDto){
@@ -66,5 +103,9 @@ public class Member extends Auditable {
         this.nickname = patchDto.getNickname();
         this.address = patchDto.getAddress();
         this.about = patchDto.getAbout();
+    }
+
+    public void setDefaultImage(String defaultImage) {
+        this.profileImage = defaultImage;
     }
 }

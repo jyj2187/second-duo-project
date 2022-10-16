@@ -25,9 +25,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/posts/comment/{post-id}")
-    public String postComment(CommentDto.Post postDto) {
-        CommentDto.Response responseDto = commentService.createComment(postDto);
-        return "redirect:/comment/" + responseDto.getCommentId();
+    public String postComment(CommentDto.Post postDto,@PathVariable("post-id") Long postId) {
+        commentService.createComment(postDto);
+        return "redirect:/comment/" + postId;
     }
 
     @GetMapping("/comment/{member-id}")
