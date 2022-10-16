@@ -1,6 +1,7 @@
 package kr.rhinitis.secondduoproject.posts.controller;
 
 import kr.rhinitis.secondduoproject.posts.dto.PostDto;
+import kr.rhinitis.secondduoproject.posts.service.PostService;
 import kr.rhinitis.secondduoproject.posts.service.PostServiceImpl;
 import kr.rhinitis.secondduoproject.util.dto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Controller
 public class PostController {
-    private final PostServiceImpl postServiceImpl;
+    private final PostService postService;
 
     @GetMapping("/posts/add")
     public String addForm() {
@@ -26,13 +27,13 @@ public class PostController {
 
     @PostMapping("/posts/add")
     public String postPost(PostDto.Post postDto) {
-        PostDto.Response responseDto = postServiceImpl.createPost(postDto);
+        PostDto.Response responseDto = postService.createPost(postDto);
         return "redirect:/posts/" + responseDto.getPostId();
     }
 
     @GetMapping("/posts/{post-id}")
     public String getPost(@PathVariable("post-id") Long postId, Model model) {
-        PostDto.Response responseDto = postServiceImpl.readPost(postId);
+        PostDto.Response responseDto = postService.readPost(postId);
         model.addAttribute("post", responseDto);
         return "posts/post";
     }
@@ -41,14 +42,14 @@ public class PostController {
     public String getPosts(@PageableDefault(page = 1, sort = "postId", direction = Sort.Direction.DESC) Pageable pageable,
                            Model model) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
-        MultiResponseDto responseDto = postServiceImpl.readAllPost(pageRequest);
+        MultiResponseDto responseDto = postService.readAllPost(pageRequest);
         model.addAttribute("posts", responseDto);
         return "posts";
     }
 
     @GetMapping("/posts/edit/{post-id}")
     public String editForm(@PathVariable("post-id") Long postId, Model model) {
-        PostDto.Response responseDto = postServiceImpl.readPost(postId);
+        PostDto.Response responseDto = postService.readPost(postId);
         model.addAttribute("post", responseDto);
         return "posts/editPost";
     }
@@ -56,13 +57,13 @@ public class PostController {
     @PostMapping("/posts/edit/{post-id}")
     public String patchPost(@PathVariable("post-id") Long postId,
                                     PostDto.Patch patchDto) {
-        PostDto.Response responseDto = postServiceImpl.updatePost(postId, patchDto);
+        PostDto.Response responseDto = postService.updatePost(postId, patchDto);
         return "redirect:/posts/" + responseDto.getPostId();
     }
 
     @PostMapping("/posts/{post-id}")
     public String deletePost(@PathVariable("post-id") Long postId) {
-        postServiceImpl.deletePost(postId);
+        postService.deletePost(postId);
         return "redirect:/posts";
     }
 }

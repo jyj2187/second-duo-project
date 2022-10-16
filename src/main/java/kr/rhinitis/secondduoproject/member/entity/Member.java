@@ -1,14 +1,18 @@
 package kr.rhinitis.secondduoproject.member.entity;
 
 import kr.rhinitis.secondduoproject.member.dto.MemberDto;
+import kr.rhinitis.secondduoproject.util.audit.Auditable;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
-@NoArgsConstructor
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends Auditable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
